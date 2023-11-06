@@ -1,10 +1,10 @@
 <?php
-header("X-ERROR: 0");
+
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
-header("X-ERROR: 1");
+
 define('LARAVEL_START', microtime(true));
-header("X-ERROR: 2");
+
 /*
 |--------------------------------------------------------------------------
 | Check If The Application Is Under Maintenance
@@ -19,7 +19,7 @@ header("X-ERROR: 2");
 if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
     require $maintenance;
 }
-header("X-ERROR: 3");
+
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader
@@ -32,7 +32,7 @@ header("X-ERROR: 3");
 */
 
 require __DIR__.'/../vendor/autoload.php';
-header("X-ERROR: 4");
+
 /*
 |--------------------------------------------------------------------------
 | Run The Application
@@ -45,11 +45,11 @@ header("X-ERROR: 4");
 */
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
-header("X-ERROR: 5");
+
 $kernel = $app->make(Kernel::class);
-header("X-ERROR: 6");
+
 $response = $kernel->handle(
     $request = Request::capture()
 )->send();
-header("X-ERROR: 7");
+
 $kernel->terminate($request, $response);

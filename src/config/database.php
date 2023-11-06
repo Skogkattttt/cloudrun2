@@ -93,6 +93,10 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
+        'firestore' => [
+            'key_file_path' => env('FIRESTORE_KEY_FILE_PATH', ''),
+            'project_id' => env('FIRESTORE_PROJECT_ID', ''),
+        ],
     ],
 
     /*
