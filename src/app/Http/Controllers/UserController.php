@@ -8,96 +8,96 @@ use Google\Cloud\Core\GeoPoint;
 
 class UserController extends Controller
 {
-    // protected $firestore;
+    protected $firestore;
 
-    // public function __construct()
-    // {
-    //     $firestoreConfig = config('database.connections.firestore');
+    public function __construct()
+    {
+        $firestoreConfig = config('database.connections.firestore');
         
-    //     $this->firestore = new FirestoreClient([
-    //         'keyFilePath' => $firestoreConfig['key_file_path'],
-    //         'projectId' => $firestoreConfig['project_id'],
-    //     ]);
-    // }
+        $this->firestore = new FirestoreClient([
+            'keyFilePath' => $firestoreConfig['key_file_path'],
+            'projectId' => $firestoreConfig['project_id'],
+        ]);
+    }
 
-    // public function index()
-    // {
-    //     $datas = [];
-    //     $documents = $this->firestore->collection('users')->documents();
-    //     foreach ($documents as $document) {
-    //         if ($document->exists()) {
-    //             $datas[] = $document->data();
-    //         }
-    //     }
+    public function index()
+    {
+        $datas = [];
+        $documents = $this->firestore->collection('users')->documents();
+        foreach ($documents as $document) {
+            if ($document->exists()) {
+                $datas[] = $document->data();
+            }
+        }
 
-    //     return response()->json($datas);
-    // }
+        return response()->json($datas);
+    }
 
-    // public function show(string $id)
-    // {
-    //     $document = $this->firestore->collection('users')->document($id)->snapshot();
+    public function show(string $id)
+    {
+        $document = $this->firestore->collection('users')->document($id)->snapshot();
 
-    //     if ($document->exists()) {
-    //         return response()->json($document->data());
-    //     }
+        if ($document->exists()) {
+            return response()->json($document->data());
+        }
 
-    //     return response()->json(['error' => 'Document not found'], 404);
-    // }
+        return response()->json(['error' => 'Document not found'], 404);
+    }
 
-    // public function store(Request $request)
-    // {
-    //     $data = $request->all();
-    //     if (isset($data['gender'])) {
-    //         $data['gender'] = $this->convertToBoolean($data['gender']);
-    //     }
-    //     if (isset($data['address']) && isset($data['address']['latitude']) && isset($data['address']['longitude'])) {
-    //         $data['address'] = new GeoPoint($data['address']['latitude'], $data['address']['longitude']);
-    //     }
+    public function store(Request $request)
+    {
+        $data = $request->all();
+        if (isset($data['gender'])) {
+            $data['gender'] = $this->convertToBoolean($data['gender']);
+        }
+        if (isset($data['address']) && isset($data['address']['latitude']) && isset($data['address']['longitude'])) {
+            $data['address'] = new GeoPoint($data['address']['latitude'], $data['address']['longitude']);
+        }
 
-    //     $documentRef = $this->firestore->collection('users')->newDocument();
-    //     $documentRef->set($data);
+        $documentRef = $this->firestore->collection('users')->newDocument();
+        $documentRef->set($data);
 
-    //     return response()->json(['id' => $documentRef->id()]);
-    // }
+        return response()->json(['id' => $documentRef->id()]);
+    }
 
-    // public function update(Request $request, string $id)
-    // {
-    //     $data = $request->all();
-    //     if (isset($data['gender'])) {
-    //         $data['gender'] = $this->convertToBoolean($data['gender']);
-    //     }
-    //     if (isset($data['address']) && isset($data['address']['latitude']) && isset($data['address']['longitude'])) {
-    //         $data['address'] = new GeoPoint($data['address']['latitude'], $data['address']['longitude']);
-    //     }
+    public function update(Request $request, string $id)
+    {
+        $data = $request->all();
+        if (isset($data['gender'])) {
+            $data['gender'] = $this->convertToBoolean($data['gender']);
+        }
+        if (isset($data['address']) && isset($data['address']['latitude']) && isset($data['address']['longitude'])) {
+            $data['address'] = new GeoPoint($data['address']['latitude'], $data['address']['longitude']);
+        }
 
-    //     $documentRef = $this->firestore->collection('users')->document($id);
-    //     $documentRef->set($data, ['merge' => true]);
+        $documentRef = $this->firestore->collection('users')->document($id);
+        $documentRef->set($data, ['merge' => true]);
 
-    //     return response()->json(['success' => true]);
-    // }
+        return response()->json(['success' => true]);
+    }
 
-    // public function destroy(string $id)
-    // {
-    //     $documentRef = $this->firestore->collection('users')->document($id);
-    //     $documentRef->delete();
+    public function destroy(string $id)
+    {
+        $documentRef = $this->firestore->collection('users')->document($id);
+        $documentRef->delete();
 
-    //     return response()->json(['success' => true]);
-    // }
+        return response()->json(['success' => true]);
+    }
 
-    // protected function convertToBoolean($value): bool
-    // {
-    //     if (is_bool($value)) {
-    //         return $value;
-    //     }
+    protected function convertToBoolean($value): bool
+    {
+        if (is_bool($value)) {
+            return $value;
+        }
 
-    //     if (is_numeric($value)) {
-    //         return (bool) $value;
-    //     }
+        if (is_numeric($value)) {
+            return (bool) $value;
+        }
 
-    //     if (is_string($value)) {
-    //         return strtolower($value) === 'true' || $value === '1';
-    //     }
+        if (is_string($value)) {
+            return strtolower($value) === 'true' || $value === '1';
+        }
 
-    //     return false;
-    // }
+        return false;
+    }
 }
