@@ -21,7 +21,7 @@ COPY . /app
 COPY ./src /app/src
 
 # 安裝 Composer 依賴
-RUN cd /app && composer install --no-dev --ignore-platform-reqs
+RUN cd /app && /usr/local/bin/composer install --no-dev --ignore-platform-reqs
 
 # 運行階段
 FROM php:8.1-fpm-alpine
