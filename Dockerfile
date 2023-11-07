@@ -28,7 +28,7 @@ RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
     && apk del .build-deps
 
 # 安裝 Composer 依賴
-RUN cd /app && /usr/local/bin/composer install --no-dev
+RUN cd /app && /usr/local/bin/composer install --no-dev --ignore-platform-reqs
 
 # 設置權限
 RUN chown -R www-data: /app

@@ -33,9 +33,9 @@ class UserController extends Controller
         return response()->json($datas);
     }
 
-    public function show(string $id)
+    public function show(string $phone)
     {
-        $document = $this->firestore->collection('users')->document($id)->snapshot();
+        $document = $this->firestore->collection('users')->document($phone)->snapshot();
 
         if ($document->exists()) {
             return response()->json($document->data());
