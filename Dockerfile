@@ -1,6 +1,9 @@
 # 建構階段
 FROM php:8.1-fpm-alpine as builder
 
+# 安裝 nginx 和 wget
+RUN apk add --no-cache nginx wget
+
 # 安裝 gRPC 依賴
 RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
     g++ \
@@ -12,22 +15,18 @@ RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
     && apk del .build-deps
 
 # 安裝 Composer
-RUN wget http://getcomposer.org/composer.phar \
-    && chmod a+x composer.phar \
-    && mv composer.phar /usr/local/bin/composer
+RUN sh -c "wget http://getcomposer.org/composer.phar && chmod a+x composer.phar && mv composer.phar /usr/local/bin/composer"
 
 # 複製應用程式代碼
+RUN mkdir -p /app
 COPY . /app
-COPY ./src /app/src
+COPY ./src /app
 
 # 安裝 Composer 依賴
 RUN cd /app && /usr/local/bin/composer install --no-dev
 
 # 運行階段
 FROM php:8.1-fpm-alpine
-
-# 安裝 nginx 和 wget
-RUN apk add --no-cache nginx wget
 
 # 創建必要的目錄
 RUN mkdir -p /run/nginx /app
