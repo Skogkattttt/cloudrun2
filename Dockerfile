@@ -19,6 +19,7 @@ RUN sh -c "wget http://getcomposer.org/composer.phar && chmod a+x composer.phar 
 
 # 複製應用程式代碼
 RUN mkdir -p /app
+COPY . /app
 COPY ./src /app
 
 # 安裝 Composer 依賴
