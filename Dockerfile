@@ -47,5 +47,9 @@ COPY docker/nginx.conf /etc/nginx/nginx.conf
 # 設置權限
 RUN chown -R www-data: /app
 
+RUN php -m
+
+RUN php --ini
+
 # 啟動腳本
 CMD sh /app/docker/startup.sh
