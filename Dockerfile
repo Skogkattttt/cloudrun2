@@ -28,7 +28,14 @@ RUN cd /app && /usr/local/bin/composer install --no-dev
 # 運行階段
 FROM php:8.1-fpm-alpine
 
-RUN apk add --no-cache nginx
+# 安裝 nginx 和 gRPC 依賴的 libstdc++
+RUN apk add --no-cache nginx libstdc++
+
+# 複製 gRPC 擴展
+COPY --from=builder /usr/local/lib/php/extensions/no-debug-non-zts-20210902/grpc.so /usr/local/lib/php/extensions/no-debug-non-zts-20210902/
+COPY --from=builder /usr/local/etc/php/conf.d/docker-php-ext-grpc.ini /usr/local/etc/php/conf.d/
+
+RUN echo 'extension=/usr/local/lib/php/extensions/no-debug-non-zts-20210902/grpc.so' > /usr/local/etc/php/conf.d/grpc.ini
 
 # 創建必要的目錄
 RUN mkdir -p /run/nginx /app
