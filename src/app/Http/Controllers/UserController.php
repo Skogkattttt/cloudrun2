@@ -20,6 +20,12 @@ class UserController extends Controller
         ]);
     }
 
+    public function info()
+    {
+        phpinfo();
+        exit;
+    }
+
     public function index()
     {
         $datas = [];
