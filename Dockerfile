@@ -2,14 +2,14 @@
 FROM php:8.1-fpm-alpine as builder
 
 # 安裝 nginx 和 wget
-RUN apk add --no-cache wget
+RUN apk add wget
 
 # 安裝 gRPC 依賴
-RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
+RUN apk add --virtual .build-deps $PHPIZE_DEPS \
     g++ \
     zlib-dev \
     linux-headers \
-    && apk add --no-cache libstdc++ \
+    && apk add libstdc++ \
     && pecl install grpc \
     && docker-php-ext-enable grpc \
     && apk del .build-deps
