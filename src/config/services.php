@@ -30,5 +30,7 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-
+    'firebase' => [
+        'credentials_file' => env('FIRESTORE_KEY_FILE_PATH'),
+    ],    
 ];

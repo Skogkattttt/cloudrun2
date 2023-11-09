@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FirebaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,3 +19,5 @@ Route::get('/', function () {
 });
 
 Route::get('/info', [UserController::class, 'info']);
+
+Route::get('firebase-phone-authentication', [FirebaseController::class, 'index']);

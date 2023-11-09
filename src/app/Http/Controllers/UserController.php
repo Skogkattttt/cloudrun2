@@ -6,14 +6,18 @@ use Illuminate\Http\Request;
 use Google\Cloud\Firestore\FirestoreClient;
 use Google\Cloud\Core\GeoPoint;
 
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
+
 class UserController extends Controller
 {
     protected $firestore;
 
     public function __construct()
     {
+        $this->middleware('jwt.auth', ['except' => ['authenticate', 'store']]);
         $firestoreConfig = config('database.connections.firestore');
-        
+
         $this->firestore = new FirestoreClient([
             'keyFilePath' => $firestoreConfig['key_file_path'],
             'projectId' => $firestoreConfig['project_id'],
@@ -24,6 +28,20 @@ class UserController extends Controller
     {
         phpinfo();
         exit;
+    }
+
+    public function authenticate(Request $request)
+    {
+        $credentials = $request->only('phone', 'password');
+        try {
+            if (!$token = JWTAuth::attempt($credentials)) {
+                return response()->json(['error' => 'invalid_credentials'], 401);
+            }
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'could_not_create_token'], 500);
+        }
+
+        return response()->json(compact('token'));
     }
 
     public function index()
